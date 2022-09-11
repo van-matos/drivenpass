@@ -1,12 +1,8 @@
-import dotenv from "dotenv";
-
 import { checkError } from "../middlewares/errorHandler";
 import { newSession } from "../repositories/sessionRepository";
 import * as userRepository from "../repositories/userRepository";
 import { IUserData } from "../types/authTypes";
 import * as authUtils from "../utils/authUtils";
-
-dotenv.config();
 
 export async function signUp(user: IUserData) {
     const { email, password } = user;

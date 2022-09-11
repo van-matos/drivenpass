@@ -17,5 +17,5 @@ export function checkError(
     status: number, 
     message: string
 ) {
-    return { status, message }
+    return { status, message };
 }

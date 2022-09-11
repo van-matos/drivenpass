@@ -15,8 +15,21 @@ model sessions {
 }
 
 model users {
-  id       Int        @id @default(autoincrement())
-  email    String     @unique
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  password    String
+  credentials credentials[]
+  sessions    sessions[]
+}
+
+model credentials {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  url      String
+  username String
   password String
-  sessions sessions[]
+  title    String
+  users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([title, userId])
 }
