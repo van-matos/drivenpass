@@ -15,8 +15,7 @@ export async function createNetwork(
         name,
         password,
         title 
-    } 
-    : { 
+    }: { 
         name: string, 
         password: string, 
         title: string 
