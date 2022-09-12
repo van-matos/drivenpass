@@ -5,14 +5,14 @@ import { encryptPassword, decryptPassword } from "../utils/credentialUtils";
 
 export async function createCredential(credential: ICredentialData) {
 
-    const checkCredential = await credentialRepository.findByTitle(credential.title, credential.userId);
+    const checkCredential = await credentialRepository.findCredentialByTitle(credential.title, credential.userId);
 
     if (checkCredential) 
         throw checkError(401, "Credential with this title already registered.");
 
     credential.password = encryptPassword(credential.password);
 
-    await credentialRepository.insert(credential);
+    await credentialRepository.insertCredential(credential);
 }
 
 export async function getCredentials(userId: number) {

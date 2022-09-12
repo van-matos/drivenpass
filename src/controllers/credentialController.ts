@@ -10,6 +10,7 @@ export async function createCredential(
     req: Request, 
     res: Response
 ) {
+    const { userData } = res.locals;
     const { 
         url, 
         username, 
@@ -21,8 +22,6 @@ export async function createCredential(
         password: string, 
         title: string 
     } = req.body;
-
-    const { userData } = res.locals;
 
     const credential: ICredentialData = {
         url,

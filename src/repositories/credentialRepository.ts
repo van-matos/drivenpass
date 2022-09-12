@@ -5,7 +5,7 @@ export async function deleteCredential(id: number) {
     await connection.credentials.delete({ where: { id } });
 }
 
-export async function findByTitle(title: string, userId: number) {
+export async function findCredentialByTitle(title: string, userId: number) {
     return await connection.credentials.findFirst({ where: { title, userId } });
 }
 
@@ -17,6 +17,6 @@ export async function getCredentialById(id: number) {
     return await connection.credentials.findFirst({ where: { id } });
 }
 
-export async function insert(credential: ICredentialData) {
+export async function insertCredential(credential: ICredentialData) {
     await connection.credentials.create({ data: credential });
 }

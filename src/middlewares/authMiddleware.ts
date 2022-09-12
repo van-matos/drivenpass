@@ -4,18 +4,30 @@ import {
     NextFunction 
 } from "express";
 
-import authSchema from "../schemas/authSchema";
+import { checkError } from "./errorHandler";
+import { findSession } from "../repositories/sessionRepository";
 
-export default function authValidation(
+export default async function authValidation(
     req: Request, 
     res: Response, 
     next: NextFunction
 ) {
+    const token = req.headers['x-api-key'];
+    
+    if (!token) 
+        throw checkError(401, "Unauthorized.");
 
-    const { error } = authSchema.validate(req.body, { abortEarly: false });
+    const session = await findSession(token);
 
-    if (error) 
-        return res.status(422).send(error.details.map((detail: { message: any; }) => detail.message));
+    if(!session) 
+        throw checkError(401, "Session expired.");
+
+    const userData = {
+        token,
+        userId: session.userId
+    };
+
+    res.locals.userData = userData;
 
     next();
 }

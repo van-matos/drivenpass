@@ -19,6 +19,7 @@ model users {
   email       String        @unique
   password    String
   credentials credentials[]
+  securenotes securenotes[]
   sessions    sessions[]
 }
 
@@ -30,6 +31,16 @@ model credentials {
   password String
   title    String
   users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([title, userId])
+}
+
+model securenotes {
+  id          Int    @id @default(autoincrement())
+  title       String @db.VarChar(50)
+  description String @db.VarChar(1000)
+  userId      Int
+  users       users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([title, userId])
 }
