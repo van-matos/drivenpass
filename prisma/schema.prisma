@@ -18,6 +18,7 @@ model users {
   id          Int           @id @default(autoincrement())
   email       String        @unique
   password    String
+  cards       cards[]
   credentials credentials[]
   securenotes securenotes[]
   sessions    sessions[]
@@ -37,10 +38,32 @@ model credentials {
 
 model securenotes {
   id          Int    @id @default(autoincrement())
+  userId      Int
   title       String @db.VarChar(50)
   description String @db.VarChar(1000)
-  userId      Int
   users       users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([title, userId])
+}
+
+model cards {
+  id             Int     @id @default(autoincrement())
+  userId         Int
+  number         String
+  name           String
+  securityCode   String
+  expirationDate String
+  isVirtual      Boolean
+  password       String
+  type           type
+  title          String
+  users          users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([title, userId])
+}
+
+enum type {
+  credit
+  debit
+  combination
 }

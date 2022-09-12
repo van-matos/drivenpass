@@ -30,6 +30,18 @@ export async function createNote(
     return res.status(201).send("Note created.");
 };
 
+export async function deleteNote(
+    req: Request, 
+    res: Response
+) {
+    const { userData } = res.locals;
+    const id: number = Number(req.params.id);
+
+    await noteService.deleteNoteById(userData.userId, id);
+
+    return res.status(200).send("Note deleted.");
+}
+
 export async function getNotes(
     req: Request, 
     res: Response
@@ -51,16 +63,4 @@ export async function getNoteById(
     const note = await noteService.getNoteById(userData.userId, id);
 
     return res.status(200).send(note);
-}
-
-export async function deleteNote(
-    req: Request, 
-    res: Response
-) {
-    const { userData } = res.locals;
-    const id: number = Number(req.params.id);
-
-    await noteService.deleteNoteById(userData.userId, id);
-
-    return res.status(200).send("Note deleted.");
 }
