@@ -1,7 +1,7 @@
 import { checkError } from "../middlewares/errorHandler";
 import * as credentialRepository from "../repositories/credentialRepository";
 import { ICredentialData } from "../types/credentialTypes";
-import { decrypt, encrypt } from "../utils/encryptionUtils";
+import * as encryptionUtils from "../utils/encryptionUtils";
 
 export async function createCredential(credential: ICredentialData) {
 
@@ -10,7 +10,7 @@ export async function createCredential(credential: ICredentialData) {
     if (checkCredential) 
         throw checkError(401, "Credential with this title already registered.");
 
-    credential.password = encrypt(credential.password);
+    credential.password = encryptionUtils.encrypt(credential.password);
 
     await credentialRepository.insertCredential(credential);
 }
@@ -18,8 +18,7 @@ export async function createCredential(credential: ICredentialData) {
 export async function getCredentials(userId: number) {
     const credentials = await credentialRepository.getCredentials(userId);
 
-    credentials.forEach(credential => credential.password = decrypt(credential.password));
-    console.log(credentials);
+    credentials.forEach(credential => credential.password = encryptionUtils.decrypt(credential.password));
 
     return credentials;
 }
@@ -33,7 +32,7 @@ export async function getCredentialById(userId: number, id: number) {
     if (credential.userId !== userId) 
         throw checkError(401, "Unauthorized.");
 
-    credential.password = decrypt(credential.password);
+    credential.password = encryptionUtils.decrypt(credential.password);
 
     return credential;
 }

@@ -48,7 +48,7 @@ export async function deleteCard(
 
     await cardService.deleteCard(userData.userId, id);
 
-    return res.status(200).send("Card removed!");
+    return res.status(200).send("Card deleted.");
 }
 
 export async function getCards(

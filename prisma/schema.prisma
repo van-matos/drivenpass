@@ -20,6 +20,7 @@ model users {
   password    String
   cards       cards[]
   credentials credentials[]
+  networks    networks[]
   securenotes securenotes[]
   sessions    sessions[]
 }
@@ -38,9 +39,9 @@ model credentials {
 
 model securenotes {
   id          Int    @id @default(autoincrement())
-  userId      Int
   title       String @db.VarChar(50)
   description String @db.VarChar(1000)
+  userId      Int
   users       users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([title, userId])
@@ -60,6 +61,15 @@ model cards {
   users          users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([title, userId])
+}
+
+model networks {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  name     String
+  password String
+  title    String
+  users    users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum type {
